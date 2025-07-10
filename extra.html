@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Factura - Samara Kitchen & Bar</title>
+  <style>
+    body { background-color: #000; color: white; font-family: Arial; }
+    form { max-width: 800px; margin: auto; padding: 20px; display: flex; flex-wrap: wrap; gap: 10px; }
+    input, select, button {
+      width: calc(33% - 10px); padding: 8px; border-radius: 5px; border: none;
+    }
+    button { width: 100%; background-color: #333; color: white; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2 style="text-align:center;">Para solicitar tu factura ingresa los datos correspondientes a tu compra</h2>
+  <form id="facturaForm">
+    <input type="text" name="nombre" placeholder="Nombre" required />
+    <input type="email" name="correo" placeholder="Correo (Requerido)" required />
+    <input type="tel" name="telefono" placeholder="Teléfono (Requerido)" required />
+    <input type="text" name="rfc" placeholder="RFC (Requerido)" required />
+    <input type="text" name="folio" placeholder="Folio (Requerido)" required />
+    <input type="text" name="forma_pago" placeholder="Forma de pago (Requerido)" required />
+    <input type="date" name="fecha" required />
+    <input type="number" name="importe" placeholder="Importe de consumo (Requerido)" required />
+    <input type="text" name="calle" placeholder="Calle y número (Requerido)" required />
+    <input type="text" name="colonia" placeholder="Colonia (Requerido)" required />
+    <input type="text" name="localidad" placeholder="Localidad (Requerido)" required />
+    <input type="text" name="municipio" placeholder="Municipio (Requerido)" required />
+    <input type="text" name="estado" placeholder="Estado (Requerido)" required />
+    <input type="text" name="cp" placeholder="Código Postal (Requerido)" required />
+
+    <select name="regimen" required>
+      <option value="">Régimen Fiscal (Requerido)</option>
+      <option>601 - General de Ley Personas Morales</option>
+      <option>603 - Personas Morales con Fines no Lucrativos</option>
+      <option>610 - Residentes en el Extranjero...</option>
+      <option>620 - Sociedades Cooperativas...</option>
+      <option>622 - Actividades Agrícolas...</option>
+      <option>623 - Opcional para Grupos...</option>
+      <option>624 - Coordinados</option>
+      <option>626 - Régimen Simplificado de Confianza</option>
+    </select>
+
+    <select name="cfdi" required>
+      <option value="">Uso del CFDI (Requerido)</option>
+      <option>G01 - Adquisición de mercancías</option>
+      <option>G02 - Devoluciones...</option>
+      <option>G03 - Gastos en general</option>
+      <option>I01 - Construcciones</option>
+      <option>I02 - Mobiliario y equipo...</option>
+      <option>I04 - Equipo de cómputo...</option>
+      <option>I05 - Dados, troqueles...</option>
+      <option>I06 - Comunicaciones telefónicas</option>
+      <option>I08 - Otra maquinaria y equipo</option>
+      <option>S01 - Sin efectos fiscales</option>
+    </select>
+
+    <button type="submit">Enviar</button>
+  </form>
+
+  <script>
+    document.getElementById("facturaForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const datos = new FormData(this);
+      const valores = Array.from(datos.values()).map(d => "${d}");
+      const fila = valores.join(",") + "\\n";
+      const blob = new Blob([fila], { type: "text/csv" });
+
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "facturas.csv";
+      a.click();
+    });
+  </script>
+</body>
+</html>
